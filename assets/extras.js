@@ -89,7 +89,16 @@
     var host = t.closest('.card, .bundle, .pd, .line') || t, img = host.querySelector('.pic img');
     var from = (img || t).getBoundingClientRect(), to = tgt.getBoundingClientRect();
     var size = 44, dot = document.createElement('div'); dot.className = 'fly-dot'; dot.setAttribute('aria-hidden', 'true');
-    if (img) dot.style.backgroundImage = 'url("' + img.currentSrc + '")';
+    if (img && img.currentSrc) {
+      try {
+        var u = new URL(img.currentSrc, location.href);
+        if (u.origin === location.origin && u.protocol === location.protocol) {
+          dot.style.backgroundImage = 'url("' + u.href.replace(/["'\\\s()]/g, function (ch) {
+            return '%' + ch.charCodeAt(0).toString(16).padStart(2, '0');
+          }) + '")';
+        }
+      } catch (err) {}
+    }
     var x0 = from.left + from.width / 2 - size / 2, y0 = from.top + from.height / 2 - size / 2, x1 = to.left + to.width / 2 - size / 2, y1 = to.top + to.height / 2 - size / 2;
     dot.style.left = x0 + 'px'; dot.style.top = y0 + 'px'; document.body.appendChild(dot);
     var dx = x1 - x0, dy = y1 - y0, lift = Math.min(160, Math.abs(dx) * .25 + 60);
