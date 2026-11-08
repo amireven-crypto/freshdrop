@@ -1,0 +1,89 @@
+/* ================= FreshDrop – features: free-shipping bar, promo code, newsletter, About =================
+   Palette colours only (#7C4DFF, #FF4D8D, #0FB5C9, #067C8C, #141432, #FFC83D, white). */
+
+/* ---- free-shipping progress (cart summary) ---- */
+.ship-bar{margin:0 0 16px;padding:14px 16px;border-radius:18px;background:var(--grad-soft);border:1px solid rgba(124,77,255,.14)}
+.ship-bar p{margin:0 0 10px;font-size:14.5px;color:var(--text);line-height:1.35}
+.ship-bar small{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+.sb-track{height:8px;border-radius:999px;background:rgba(124,77,255,.12);overflow:hidden}
+.sb-track span{display:block;height:100%;border-radius:inherit;background:var(--grad);transition:width .8s cubic-bezier(.28,.11,.32,1)}
+.ship-bar.done{background:linear-gradient(135deg,#E6FAFD,#F1EBFF);border-color:rgba(15,181,201,.35)}
+.ship-bar.done p{color:#067C8C;font-weight:600}
+.free-ship{color:#067C8C;font-weight:800;letter-spacing:.02em}
+.summary .r.disc span:last-child{color:#067C8C;font-weight:700}
+.summary .r.disc span:first-child{color:var(--text)}
+
+/* ---- promo code ---- */
+.promo{margin:14px 0 16px;display:grid;gap:8px}
+.promo label{font-size:13px;font-weight:600;color:var(--text)}
+.promo-row{display:flex;gap:8px}
+.promo-row input{flex:1;min-width:0;min-height:44px;padding:10px 16px;border-radius:999px;border:1px solid var(--input-border);font:inherit;font-size:15px;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.9);color:var(--text)}
+.promo-row input:focus-visible{outline:3px solid var(--aqua);outline-offset:2px}
+.promo-row .btn{min-height:44px;padding:10px 18px;flex:none}
+.promo-msg{margin:0;font-size:13px;color:var(--pink);min-height:0}
+.promo-msg:empty{display:none}
+.promo.on{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg,#E6FAFD,#F1EBFF);border:1px solid rgba(15,181,201,.35);font-size:14px;color:var(--text)}
+.promo-rm{background:none;border:0;color:var(--accent);font:inherit;font-weight:600;font-size:13px;cursor:pointer;text-decoration:underline;min-height:44px;padding:0 4px}
+
+/* ---- sticky mobile cart: free-shipping hint + progress hairline ---- */
+.m-cart .mc-t{display:flex;flex-direction:column;line-height:1.15}
+.m-cart .mc-ship{font-size:11.5px;font-weight:600;opacity:.92}
+.m-cart .mc-ship:empty{display:none}
+@media(max-width:820px){
+  .m-cart{overflow:hidden;padding-top:11px;padding-bottom:11px}
+  .m-cart::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--ship,0%);background:#FFC83D;border-radius:999px;transition:width .8s cubic-bezier(.28,.11,.32,1)}
+}
+
+/* ---- newsletter (inline, above the footer) ---- */
+.news{padding:40px 0 0;margin-top:40px}
+.news-card{position:relative;overflow:hidden;isolation:isolate;text-align:center;padding:64px 28px;border-radius:36px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.9);box-shadow:0 30px 70px -40px rgba(60,30,160,.45)}
+.news-card::before{content:"";position:absolute;inset:-30%;z-index:-1;background:radial-gradient(30% 40% at 20% 30%,rgba(124,77,255,.20),transparent 70%),radial-gradient(30% 40% at 80% 70%,rgba(255,77,141,.18),transparent 70%),radial-gradient(25% 35% at 70% 20%,rgba(15,181,201,.16),transparent 70%);filter:blur(30px)}
+.news-card h2{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:clamp(34px,5vw,60px);font-weight:650;letter-spacing:-.04em;line-height:1.05;margin:14px auto 10px;color:var(--ink)}
+.news-card h2 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.news-card h2:focus{outline:none}
+.news-lead{font-size:clamp(17px,1.5vw,20px);color:var(--muted);margin:0 auto 26px;max-width:32em}
+.news-form{display:flex;gap:10px;max-width:520px;margin:0 auto;padding:6px;border-radius:999px;background:#fff;border:1px solid rgba(124,77,255,.18);box-shadow:0 12px 30px -20px rgba(60,30,160,.45)}
+.news-form input{flex:1;min-width:0;border:0;background:transparent;padding:0 18px;font:inherit;font-size:16px;color:var(--text);min-height:48px;border-radius:999px}
+.news-form input:focus-visible{outline:3px solid var(--aqua);outline-offset:0}
+.news-form .btn{flex:none;min-height:48px;padding:12px 24px}
+.news-msg{margin:12px 0 0;font-size:14px;color:var(--pink);font-weight:600}
+.news-msg:empty{display:none}
+.news-note{margin:18px auto 0;font-size:12.5px;color:var(--muted);max-width:40em}
+.news-code{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;padding:10px 10px 10px 22px;border-radius:999px;background:#fff;border:2px dashed rgba(124,77,255,.45);box-shadow:0 12px 30px -20px rgba(60,30,160,.45)}
+.news-code>b{font-size:22px;letter-spacing:.12em;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-reduced-motion:no-preference){.news-card.done>*{animation:aplUp .8s cubic-bezier(.28,.11,.32,1) both}.news-card.done>*:nth-child(2){animation-delay:.06s}.news-card.done>*:nth-child(3){animation-delay:.12s}.news-card.done>*:nth-child(4){animation-delay:.18s}}
+footer.site{margin-top:60px}
+@media(max-width:560px){
+  .news-card{padding:44px 18px;border-radius:28px}
+  .news-form{flex-direction:column;border-radius:24px;padding:8px}
+  .news-form input{text-align:center}
+  .news-form .btn{width:100%}
+  .news-code{padding:12px 16px}
+}
+
+/* ---- About page ---- */
+.about-hero{text-align:center;padding:96px 0 20px}
+.about-hero h1{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:clamp(46px,7vw,96px);font-weight:700;letter-spacing:-.045em;line-height:1.02;margin:18px 0;color:var(--ink)}
+.about-hero h1 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.about-lead{font-size:clamp(19px,1.8vw,24px);color:var(--muted);max-width:32em;margin:0 auto;line-height:1.4}
+.about-pillars{padding-top:56px!important;padding-bottom:40px!important}
+.about-pillars .trust p{color:var(--muted)}
+.story-card{max-width:820px;margin:0 auto;padding:56px;border-radius:36px;background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.9);box-shadow:0 30px 70px -44px rgba(60,30,160,.45)}
+.story-card h2{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:clamp(34px,4.6vw,56px);font-weight:650;letter-spacing:-.04em;margin:0 0 18px;color:var(--ink)}
+.story-card h2 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.story-card h3{font-size:20px;margin:30px 0 8px}
+.story-card p{font-size:17px;line-height:1.6;color:#3A3A5C}
+.about-note{font-size:14px!important;color:var(--muted)!important;background:rgba(255,200,61,.18);border-left:4px solid var(--accent2);padding:12px 16px;border-radius:10px}
+.about-note a{color:var(--accent)}
+.about-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.about-story{padding-top:20px!important}
+@media(max-width:820px){.about-hero{padding:48px 0 10px}}
+@media(max-width:560px){.story-card{padding:28px 20px;border-radius:28px}.about-ctas .btn{width:100%}}
+@media (prefers-reduced-motion:reduce){.sb-track span,.m-cart::after{transition:none}}
+/* keep the cart summary inside narrow screens */
+.cart-layout>*{min-width:0}
+.promo-row input{width:0}
+.promo{min-width:0}
+/* icon tiles inside trust cards: stop the card border/padding from leaking onto the icon box */
+.trust .ic{border:0;padding:0;box-shadow:none;border-radius:16px}
+@media(max-width:560px){.about-pillars .trust{grid-template-columns:1fr}}
