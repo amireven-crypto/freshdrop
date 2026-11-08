@@ -1,0 +1,4 @@
+Fredoka (variable, wght 500-700) - Copyright 2016 The Fredoka Project Authors (https://github.com/hafontia-zz/Fredoka-One).
+Licensed under the SIL Open Font License, Version 1.1 (https://openfontlicense.org). Free for commercial use, self-hosting and embedding.
+Source: Google Fonts (https://fonts.google.com/specimen/Fredoka), woff2 subsets latin and latin-ext downloaded from fonts.gstatic.com.
+Used only for the FreshDrop wordmark and the headings (hero h1, section headings, category title).

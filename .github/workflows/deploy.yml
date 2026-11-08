@@ -18,10 +18,20 @@ jobs:
       url: ${{ steps.d.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          mkdir _site
-          if [ -f fd_site.zip ]; then unzip -q fd_site.zip -d _site; else cp -r . _site; fi
+        with:
+          persist-credentials: false
+      - name: Assemble public site
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          shopt -s nullglob
+          # Publish the storefront only. Do not copy the git checkout,
+          # workflow files, archives, or environment files.
+          cp -a -- *.html robots.txt sitemap.xml favicon.ico _site/
+          cp -a assets _site/assets
           touch _site/.nojekyll
+          bash scripts/check-public-site.sh _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
