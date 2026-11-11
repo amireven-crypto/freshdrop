@@ -1,0 +1,284 @@
+/* =====================================================================
+   FreshDrop · Apple.com design language overlay (keep-colors preview)
+   Loaded last. Typography, spacing, radius, depth and motion only.
+
+   Does NOT change the color palette: no color / background / border-color
+   / gradient / theme-color / color-scheme overrides. Live tokens stay
+   exactly as on main. The FreshDrop wordmark keeps Fredoka; all other
+   type uses an SF Pro-like system stack and Apple's type scale.
+
+   Motion adapted from Open Design / motion-anything as plain CSS/JS:
+   fade-content, xyz-fade-up, blur-text, kinetic-headline, glare-hover,
+   page-fade. Short, eased, small offsets. prefers-reduced-motion.
+   ===================================================================== */
+
+:root{
+  --ap-ease:cubic-bezier(.28,.11,.32,1);
+  --ap-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Inter,sans-serif;
+  --ap-text:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Inter,"Segoe UI",sans-serif;
+}
+
+/* ---- type: Apple scale, tight display tracking, light body ---- */
+body{
+  font-family:var(--ap-text);
+  font-weight:400;
+  font-size:17px;
+  line-height:1.47;
+  letter-spacing:-.022em;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+p,.lead,.desc,.hero .lead,.card .desc,.legal p,.legal li,.story-card p,.news-lead,.about-lead{
+  font-weight:400;
+  letter-spacing:-.022em;
+}
+
+h1,h2,h3,h4,h5,h6,
+.hero h1,.sec-head h1,.sec-head h2,#ptitle,
+.news-card h2,.story-card h2,.story-card h3,.summary .sh,
+footer.site .fh,.card .ct,.lt,.pd h1,.legal h1,.legal h2,.legal h3,
+.bundle h3,.trust h3,.cat-tile .cn,.nf h1,.nf .big,.about-hero h1,
+.ad-video__copy h2{
+  font-family:var(--ap-display) !important;
+  font-weight:600;
+  text-transform:none;
+}
+
+/* Wordmark keeps its own face (Fredoka) */
+.logo .wm,
+footer.site .logo .wm{
+  font-family:var(--display) !important;
+  font-weight:700;
+}
+
+.hero h1,.about-hero h1,.legal h1,.nf h1{
+  font-size:clamp(44px,6vw,80px);
+  font-weight:600;
+  letter-spacing:-.03em !important;
+  line-height:1.05;
+  text-transform:none;
+  filter:none;
+}
+.hero h1 em,.sec-head h2 b,.sec-head h1 b,.news-card h2 b,.about-hero h1 b,.story-card h2 b,.nf .big{
+  filter:none;
+}
+.sec-head h2,.sec-head h1,.news-card h2,.story-card h2,.ad-video__copy h2{
+  font-size:clamp(32px,4.6vw,48px);
+  font-weight:600;
+  letter-spacing:-.02em !important;
+  line-height:1.08;
+  text-transform:none;
+}
+#ptitle,.pd h1,#ptitle.is-ct{
+  font-size:clamp(36px,5vw,56px);
+  font-weight:600;
+  letter-spacing:-.025em !important;
+  line-height:1.07;
+}
+#ptitle .ct-t{font-family:var(--ap-display) !important;font-weight:600;letter-spacing:-.025em}
+.card .ct,.lt,.bundle h3,.trust h3,.summary .sh,.story-card h3,.legal h2{
+  font-size:21px;
+  font-weight:600;
+  letter-spacing:-.011em !important;
+  line-height:1.14;
+}
+.legal h2{font-size:28px;letter-spacing:-.016em !important}
+.legal h3{font-size:21px;font-weight:600}
+.card .ct{font-size:17px;letter-spacing:-.014em !important;line-height:1.24}
+.hero .lead,.about-lead,.news-lead,.nf p,.ad-video__copy p{
+  font-size:clamp(19px,1.6vw,21px);
+  font-weight:400;
+  line-height:1.38;
+  letter-spacing:.011em;
+  max-width:32em;
+}
+.sec-head p,.card .desc{font-size:17px;font-weight:400;line-height:1.47;letter-spacing:-.022em}
+.price,.card .price,.bundle .price,.pd .price{
+  font-family:var(--ap-display);
+  font-weight:600;
+  letter-spacing:-.02em;
+  font-size:21px;
+}
+.eyebrow,.hero .eyebrow{
+  font-family:var(--ap-text);
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.12em;
+}
+.nav-links a{
+  font-family:var(--ap-text);
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:-.01em;
+}
+.btn,.cart-btn{
+  font-family:var(--ap-text);
+  font-weight:600;
+  letter-spacing:-.01em;
+}
+footer.site .fh{font-weight:600;letter-spacing:.08em !important;font-size:12px}
+
+/* ---- frosted sticky nav (blur only; colors unchanged) ---- */
+header.site,
+header.site.is-scrolled{
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);
+}
+header.site::after{box-shadow:none !important}
+.nav{height:52px;transition:height .4s var(--ap-ease)}
+header.site.is-scrolled .nav{height:48px}
+.nav-links a::after{box-shadow:none !important;height:1px;animation:none !important}
+@media(max-width:820px){
+  .nav-links{top:52px}
+}
+
+/* ---- spacing: generous Apple chapter padding ---- */
+.hero{padding:88px 0 72px}
+.about-hero{padding:96px 0 28px}
+section.block{padding:100px 0}
+.sec-head{margin-bottom:40px;align-items:flex-end}
+.ad-video{padding:20px 0 36px}
+.news{padding:48px 0 0;margin-top:48px}
+footer.site{margin-top:80px}
+.wrap{padding-left:24px;padding-right:24px}
+.legal{padding-top:72px;padding-bottom:80px}
+.nf{padding:120px 0 72px}
+@media(max-width:820px){
+  .hero{padding:56px 0 48px}
+  section.block{padding:64px 0}
+  .about-hero{padding:56px 0 16px}
+  .nav{height:52px}
+}
+
+/* ---- radius: Apple tiers (controls / cards / modules / capsules) ---- */
+.btn,.btn-primary,.btn-ghost,.cart-btn,.chip,.catrow#catmain,.catrow#catmain .chip,
+.seg-ind,.promo-row input,.news-form,.news-form .btn,.qty,.m-cart{border-radius:980px}
+.card,.ship-box,.ship-bar,.promo.on,.use-guide,.terms-strip div{border-radius:18px}
+.hero-main,.news-card,.story-card,.summary,.bundle,.cat-tile,.ad-video__frame,.deal-strip{border-radius:28px}
+.btn-xl{padding:16px 28px;font-size:17px;min-height:52px}
+.btn{padding:12px 22px;min-height:44px}
+.btn-sm{padding:8px 16px;font-size:14px}
+
+/* ---- hairline borders, no heavy outlines; soft depth instead of neon glow ---- */
+.btn-ghost{border-width:1px}
+.marquee{border-top-width:1px;border-bottom-width:1px;transform:none;margin:0;padding:10px 0;font-weight:600;text-transform:none;letter-spacing:-.01em;font-size:13px}
+footer.site::before{height:1px}
+.summary::before{height:2px}
+.demo-bar{box-shadow:none;font-weight:600;letter-spacing:0;font-size:12px;padding:7px 12px}
+
+.btn-primary,
+.bundle .btn-primary,.hero .btn-primary,.pd .buy-row .btn-primary,.summary .btn-primary{
+  box-shadow:0 8px 24px -16px rgba(0,0,0,.5);
+}
+.btn-primary:hover,
+.bundle .btn-primary:hover,.hero .btn-primary:hover,.pd .buy-row .btn-primary:hover,.summary .btn-primary:hover{
+  box-shadow:0 12px 28px -16px rgba(0,0,0,.55);
+  transform:scale(1.02);
+}
+.btn:active,.btn-primary:active,.btn-ghost:active{transform:scale(.97);transition-duration:.12s}
+.btn,.btn-primary,.btn-ghost,.cart-btn{
+  transition:transform .35s var(--ap-ease),box-shadow .35s var(--ap-ease);
+}
+.cart-btn{box-shadow:0 8px 20px -14px rgba(0,0,0,.5)}
+.cart-btn:hover{transform:scale(1.02);box-shadow:0 10px 24px -14px rgba(0,0,0,.55)}
+.cart-btn:active{transform:scale(.97)}
+
+.card{
+  box-shadow:0 1px 2px rgba(0,0,0,.2),0 16px 36px -28px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 28px -18px rgba(0,0,0,.5);
+}
+.card::before,.trust>div::before,.story-card::before{opacity:0 !important}
+.card .thumb::before{opacity:.35;filter:blur(28px)}
+.card .body{padding:14px 16px 18px;gap:8px}
+.bundle,.trust>div,.story-card,.news-card,.summary,.hero-main,.hero-float{
+  box-shadow:0 16px 40px -28px rgba(0,0,0,.5);
+}
+.hero-main{box-shadow:0 20px 50px -30px rgba(0,0,0,.55)}
+.hero-art::before{filter:blur(48px);animation:none !important;opacity:.55}
+.hero .eyebrow{box-shadow:none}
+.hero .eyebrow::before{animation:none;box-shadow:none}
+.nav-links a.active{text-shadow:none}
+.trust .ic{box-shadow:none}
+.cat-tile:hover{box-shadow:0 20px 40px -28px rgba(0,0,0,.5)}
+.deal-strip{box-shadow:0 16px 36px -24px rgba(0,0,0,.45)}
+.deal-strip::after{animation:none;opacity:.2}
+#ptitle .ct-pill{box-shadow:none;transition:transform .45s var(--ap-ease)}
+#ptitle .ct-word{filter:none}
+#ptitle .ct-ic{filter:none}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  #ptitle.is-ct:hover .ct-pill{animation:none;box-shadow:none;transform:none}
+}
+.seg-ind{box-shadow:none}
+.to-top{box-shadow:0 10px 24px -16px rgba(0,0,0,.4)}
+.bnav{box-shadow:none}
+.bnav a.on svg,.bnav a[aria-current] svg{filter:none}
+.fly-dot{box-shadow:0 0 0 3px rgba(0,0,0,.2),0 10px 24px -8px rgba(0,0,0,.45)}
+
+/* ---- large product imagery on clean cards ---- */
+.card .thumb{aspect-ratio:1/1}
+.pd .gallery::before{filter:blur(36px)}
+
+/* ---- glare-hover: brief sheen on primary CTAs (no color tokens) ---- */
+@media (hover:hover) and (pointer:fine){
+  .btn-primary{position:relative;overflow:hidden}
+  .btn-primary::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);
+    transform:translateX(-120%);
+    transition:transform .55s var(--ap-ease);
+  }
+  .btn-primary:hover::after{transform:translateX(120%)}
+}
+
+/* ---- kinetic-headline + blur-text + fade-in-up (short, small offsets) ---- */
+@media (prefers-reduced-motion:no-preference){
+  .ap-intro .hero .eyebrow,
+  .ap-intro .hero h1,
+  .ap-intro .hero .lead,
+  .ap-intro .hero-ctas,
+  .ap-intro .hero-facts,
+  .ap-intro .ad-video__copy{animation:apFadeUp .7s var(--ap-ease) both}
+  .ap-intro .hero h1{animation-name:apFadeUpBlur;animation-duration:.8s;animation-delay:.06s}
+  .ap-intro .hero .lead{animation-delay:.14s}
+  .ap-intro .hero-ctas{animation-delay:.22s}
+  .ap-intro .hero-facts{animation-delay:.3s}
+  .ap-intro .hero-art,.ap-intro .ad-video__frame{animation:apFadeUp .7s var(--ap-ease) .18s both}
+  html{scroll-behavior:smooth}
+}
+@keyframes apFadeUp{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+@keyframes apFadeUpBlur{from{opacity:0;transform:translate3d(0,12px,0);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+
+/* ---- scroll-reveal: fade-content + xyz-fade-up ---- */
+.reveal{opacity:0;transform:translate3d(0,16px,0);transition:opacity .6s var(--ap-ease),transform .6s var(--ap-ease)}
+.reveal.in{opacity:1;transform:none}
+.sec-head.reveal{transform:translate3d(0,12px,0)}
+
+/* ---- page-fade ---- */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.4s;animation-timing-function:var(--ap-ease)}
+::view-transition-old(root){animation-name:apVtOut}
+::view-transition-new(root){animation-name:apVtIn}
+@keyframes apVtOut{to{opacity:0}}
+@keyframes apVtIn{from{opacity:0;transform:translateY(8px)}}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ap-intro .hero .eyebrow,
+  .ap-intro .hero h1,
+  .ap-intro .hero .lead,
+  .ap-intro .hero-ctas,
+  .ap-intro .hero-facts,
+  .ap-intro .hero-art,
+  .ap-intro .ad-video__copy,
+  .ap-intro .ad-video__frame,
+  .hero-art::before,.hero-main,.hero-float,.deal-strip::after,
+  .hero .eyebrow::before{animation:none !important}
+  .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+  .btn,.btn-primary,.card,.cat-tile,.bundle,.to-top,.seg-ind,#pgrid,.cart-btn{transition:none !important}
+  .btn-primary::after{display:none}
+  .hero h1{filter:none !important;transform:none !important}
+  ::view-transition-old(root),::view-transition-new(root){animation:none !important}
+}
