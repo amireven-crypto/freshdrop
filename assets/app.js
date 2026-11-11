@@ -643,8 +643,9 @@ function header(active) {
   <div class="demo-bar">DEMO STORE – no real orders, no payments. All [yellow] fields are placeholders.</div>
   <header class="site"><div class="wrap nav">
     <a class="logo" href="index.html">${LOGO}</a>
-    <nav class="nav-links" id="navl" aria-label="Main">${l('products.html', 'All products', 'shop')}${l('products.html#Bundle', 'Bundles', 'sets')}${l('shipping.html', 'Shipping & Returns', 'shipping')}${l('about.html', 'About', 'about')}${l('legal-notice.html', 'Contact', 'contact')}</nav>
+    <nav class="nav-links" id="navl" aria-label="Main">${l('products.html', 'All products', 'shop')}${l('products.html#Bundle', 'Bundles', 'sets')}${l('shipping.html', 'Shipping & Returns', 'shipping')}${l('about.html', 'About', 'about')}${l('legal-notice.html', 'Contact', 'contact')}<span class="auth-slot"><button type="button" class="auth-nav-btn" data-auth="open" aria-haspopup="dialog" aria-controls="auth-overlay">Sign in</button></span></nav>
     <button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="navl" data-act="burger">☰</button>
+    <span class="auth-slot auth-slot-bar"><button type="button" class="auth-nav-btn auth-bar-btn" data-auth="open" aria-haspopup="dialog" aria-controls="auth-overlay" aria-label="Sign in"><span class="sr">Sign in</span></button></span>
     <a class="cart-btn" href="cart.html"><svg class="cart-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span class="sr">Cart, items:</span> <span class="count">0</span></a>
   </div></header>`;
 }
@@ -1110,6 +1111,7 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => { if (e.target.id === 'q') e.target.value = clampQ(e.target.value); });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if (document.querySelector('.auth-overlay.is-open')) return;
   const n = document.getElementById('navl'), b = document.querySelector('.burger');
   if (n && n.classList.contains('open')) { n.classList.remove('open'); if (b) { b.setAttribute('aria-expanded', 'false'); b.focus(); } }
 });
