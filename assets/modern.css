@@ -77,7 +77,7 @@ header.site.is-scrolled::after{opacity:.55}
   .cat-tile:nth-child(4) .cn,.cat-tile:nth-child(10) .cn{font-size:24px}
 }
 .cat-tile{border:1px solid rgba(255,255,255,.8);background:var(--grad-soft)}
-.cat-tile::after{background:linear-gradient(180deg,transparent 45%,rgba(20,20,50,.72))}
+.cat-tile::after{background:linear-gradient(180deg,transparent 28%,rgba(16,16,36,.62) 58%,rgba(8,8,20,.94) 100%)}
 .cat-tile .cc{background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:2px 9px;opacity:1}
 .cat-tile:hover{box-shadow:0 30px 60px -28px rgba(124,77,255,.5)}
 
