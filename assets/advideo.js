@@ -4,21 +4,27 @@
     var hero=main.querySelector('.hero'); if(!hero) return false;
     var s=document.createElement('section'); s.className='ad-video'; s.id='ad-video'; s.setAttribute('aria-label','FreshDrop video ad');
     s.innerHTML='<div class="wrap"><div class="ad-video__frame">'+
-      '<video muted autoplay loop playsinline preload="metadata" width="720" height="720" poster="assets/video/freshdrop-ad-poster.jpg" aria-label="FreshDrop video ad: cosy pet and home products, delivered fast">'+
-      '<source src="assets/video/freshdrop-ad.mp4" type="video/mp4"></video>'+
+      '<video muted loop playsinline preload="none" width="720" height="720" poster="assets/video/freshdrop-ad-poster.jpg" aria-label="FreshDrop video ad: cosy pet and home products, delivered fast"></video>'+
       '<button type="button" class="ad-video__sound" aria-pressed="false">🔇 Tap for sound</button></div>'+
       '<div class="ad-video__copy"><h2>Comfort, delivered.</h2><p>Bestsellers for your home, car and pets, picked for everyday comfort.</p>'+
       '<a class="btn btn-primary btn-xl" href="#bestsellers">Shop now</a></div></div>';
     main.insertBefore(s,hero);
     var v=s.querySelector('video'), b=s.querySelector('.ad-video__sound');
-    v.muted=true; var p=v.play(); if(p&&p.catch)p.catch(function(){});
-    function unmute(){ if(!v.muted) return; v.muted=false; v.play().catch(function(){}); b.textContent='🔊 Sound on'; b.setAttribute('aria-pressed','true'); off(); }
-    function toggle(e){ e.stopPropagation(); v.muted=!v.muted; if(!v.muted)v.play().catch(function(){}); b.textContent=v.muted?'🔇 Tap for sound':'🔊 Sound on'; b.setAttribute('aria-pressed',String(!v.muted)); off(); }
+    v.muted=true;
+    /* Perf: no MP4 bytes before the page has loaded; phones get the 480px file; reduced motion / Save-Data keep the poster until the user asks. */
+    var rm=matchMedia('(prefers-reduced-motion: reduce)').matches, sd=!!(navigator.connection&&navigator.connection.saveData), loaded=false;
+    function load(){ if(loaded) return; loaded=true; v.src='assets/video/'+(matchMedia('(max-width: 600px)').matches?'freshdrop-ad-480.mp4':'freshdrop-ad.mp4'); }
+    function start(){ load(); var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+    var auto=!rm&&!sd;
+    function later(){ if(auto) (window.requestIdleCallback||setTimeout)(function(){ start(); },{timeout:1500}); }
+    if(document.readyState==='complete') later(); else window.addEventListener('load',later,{once:true});
+    function unmute(){ if(!v.muted||!auto) return; v.muted=false; start(); b.textContent='🔊 Sound on'; b.setAttribute('aria-pressed','true'); off(); }
+    function toggle(e){ e.stopPropagation(); v.muted=!v.muted; if(!v.muted)start(); b.textContent=v.muted?'🔇 Tap for sound':'🔊 Sound on'; b.setAttribute('aria-pressed',String(!v.muted)); off(); }
     function off(){ document.removeEventListener('pointerdown',unmute,true); document.removeEventListener('keydown',unmute,true); }
     b.addEventListener('click',toggle);
     document.addEventListener('pointerdown',function(e){ if(e.target!==b) unmute(); },{capture:true,once:true});
     document.addEventListener('keydown',unmute,{capture:true,once:true});
-    if('IntersectionObserver' in window) new IntersectionObserver(function(es){es.forEach(function(en){ if(en.isIntersecting) v.play().catch(function(){}); else v.pause(); });},{threshold:.25}).observe(v);
+    if('IntersectionObserver' in window) new IntersectionObserver(function(es){es.forEach(function(en){ if(en.isIntersecting){ if(loaded&&(auto||!v.muted)) v.play().catch(function(){}); } else v.pause(); });},{threshold:.25}).observe(v);
     s.querySelector('a.btn').addEventListener('click',function(e){
       var t=document.getElementById('bestsellers')||[].slice.call(main.querySelectorAll('section.block')).filter(function(x){var h=x.querySelector('h2');return h&&/bestseller/i.test(h.textContent);})[0];
       if(t){ e.preventDefault(); t.id=t.id||'bestsellers'; t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}); }

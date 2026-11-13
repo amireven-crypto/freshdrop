@@ -1,0 +1,9 @@
+/* Tap-target fixes (QA 2026-11-13): inline text links get a >=24px hit area without changing line layout; controls reach 44px. */
+:where(p,li,dd,td,small,address,.about-note,.legal,.meta,.ship-box,.acc-body,details,.acc .in) > a:not(.btn):not(.chip){padding-block:5px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+:is(footer,.foot) a:not(.btn):not(.logo){display:inline-block;min-height:24px;padding-block:6px}
+.ad-video__sound{min-height:44px;padding-inline:14px}
+.catrow#catmain .chip,.catrow .chip,.chip{min-height:44px}
+@media (max-width:720px){.catrow#catmain .chip{min-height:44px}}
+.logo{min-height:44px}
+/* Mobile overflow guard: the tilted category marquee (margin -10px + rotate) leaked ~11px past the viewport. Clip it at the page wrapper so the look stays identical. */
+#main,main{overflow-x:clip}

@@ -739,7 +739,7 @@ function pageHome() {
     <div class="sec-head"><div><h2>Shop by <b>category</b></h2></div><a class="btn btn-ghost btn-sm" href="products.html">All products →</a></div>
     ${catTiles()}
   </div></section>
-  <section class="block"><div class="wrap">
+  <section class="block" id="bestsellers"><div class="wrap">
     <div class="sec-head"><div><h2>The <b>bestsellers</b></h2><p>What belongs in almost every car.</p></div><a class="btn btn-ghost btn-sm" href="products.html">All products →</a></div>
     <div class="grid">${best.map(p => card(p)).join('')}</div>
   </div></section>
