@@ -75,7 +75,9 @@
 /* ================= Dark mode (automatic, follows the device setting) =================
    Brand accents (#7C4DFF / #0FB5C9 / #FF4D8D / #FFC83D, gradients, CTAs) stay exactly the same –
    only page backgrounds, surfaces and text colours adapt. Light mode is untouched. */
-/* dark is the only theme (always on) */
+/* Follows the visitor's system setting again (13 Nov 2026): light = the original light theme, dark = this block. */
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
 
 :root{color-scheme:dark;
   --bg:#121229;--bg2:#17172F;--tint2:#132C33;--card:#1A1A36;--line:rgba(255,255,255,.10);--text:#ECEBF7;--muted:#B3B2CE;--ink:#F3F2FB;
@@ -141,3 +143,4 @@ img{color-scheme:light}
 .bundle .save-pill,.save-pill.on-card,.save-pill.big{color:#141432}
 .bundle .save-pill,.save-pill.on-card{background:#FFC83D}
 .skip{background:#FFC83D;color:#141432}
+}

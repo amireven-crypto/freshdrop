@@ -7,3 +7,29 @@
 .logo{min-height:44px}
 /* Mobile overflow guard: the tilted category marquee (margin -10px + rotate) leaked ~11px past the viewport. Clip it at the page wrapper so the look stays identical. */
 #main,main{overflow-x:clip}
+/* AA for white labels on the pink CTA/badge gradients, both colour schemes (13 Nov 2026): same hues, deeper start */
+.card .btn-primary.btn-sm,.badge{background:linear-gradient(135deg,#D62A72,#B81A5C)}
+.card .btn-primary.btn-sm:hover{background:linear-gradient(135deg,#E0327A,#A8154F)}
+.bundle .btn-primary,.hero .btn-primary,.pd .buy-row .btn-primary,.summary .btn-primary{background:linear-gradient(135deg,#D62A72,#6A3AF0)}
+.badge.alt{background:#FFC83D}
+@media (prefers-color-scheme: light){
+  .legal a,.story-card a,.about-note a,.news-note a{color:#5B2EF0}
+  footer.site .tagline{color:#B9B9D6}
+  /* sign-in dialog + account menu in light */
+  .auth-overlay{background:rgba(20,20,50,.38)}
+  .auth-dialog{background:#FFFFFF;color:#141432;border-color:#E9E4FA;box-shadow:0 24px 64px -24px rgba(60,30,160,.45)}
+  .auth-dialog h2{color:#141432}
+  .auth-note,.auth-tabs [role="tab"]{color:#5B5B7A}
+  .auth-tabs{border-bottom-color:#E9E4FA}
+  .auth-tabs [role="tab"][aria-selected="true"],.auth-tabs [role="tab"]:hover{color:#141432}
+  .auth-close{color:#5B2EF0}.auth-close:hover{background:#F3EEFE;color:#141432}
+  .auth-div{color:#5B5B7A}.auth-div::before,.auth-div::after{background:#E9E4FA}
+  .auth-email-label{color:#3A3A5A}.auth-optional{color:#5B5B7A}
+  .auth-email-label input{background:#FFFFFF;color:#141432;border-color:#8A8AA6}
+  .auth-menu{background:#FFFFFF;border-color:#E9E4FA;box-shadow:0 18px 40px -16px rgba(60,30,160,.35)}
+  .auth-menu button{color:#141432}.auth-menu button:hover{background:#F3EEFE;color:#141432}
+}
+.legal a.btn-primary,.story-card a.btn-primary,.about-note a.btn-primary,.news-note a.btn-primary{color:#fff}
+.legal a.btn-ghost,.story-card a.btn-ghost,.about-note a.btn-ghost,.news-note a.btn-ghost{color:var(--ink,#141432)}
+footer.site .foot a:not(.btn):not(.logo){display:block;width:fit-content}
+.m-cart{background:linear-gradient(135deg,#D62A72,#6A3AF0)}
