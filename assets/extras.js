@@ -33,7 +33,7 @@
 
   function benefits() {
     var bar = document.querySelector('.demo-bar'); if (!bar || document.querySelector('.benefits')) return;
-    var items = ['📦 Shipping across the EU', '↩️ Easy returns – 14-day right of withdrawal', '🔍 Quality-checked products', '🚚 Free shipping over €39'];
+    var items = ['📦 Planned: shipping across the EU', '↩️ Easy returns – 14-day right of withdrawal', '🔍 Quality-checked products', '🚚 Free shipping over €39'];
     bar.insertAdjacentHTML('afterend', '<div class="benefits' + (reduce ? ' static' : '') + '" role="region" aria-label="Store benefits"><ul>' + items.map(function (t, i) { return '<li' + (i === 0 ? ' class="on"' : '') + '>' + t + '</li>'; }).join('') + '</ul></div>');
     if (reduce) return;
     var el = document.querySelector('.benefits'), li = el.querySelectorAll('li'), i = 0, paused = false;
