@@ -1,14 +1,14 @@
 (function(){
   function mount(){
     var main=document.getElementById('main'); if(!main||document.getElementById('ad-video')) return !!main;
-    var hero=main.querySelector('.lw-why')||main.querySelector('.hero'); if(!hero) return false;
+    var hero=main.querySelector('.hero'); if(!hero) return false;
     var s=document.createElement('section'); s.className='ad-video'; s.id='ad-video'; s.setAttribute('aria-label','FreshDrop video ad');
     s.innerHTML='<div class="wrap"><div class="ad-video__frame">'+
       '<video muted loop playsinline preload="none" width="720" height="720" poster="assets/video/freshdrop-ad-poster.jpg" aria-label="FreshDrop video ad: cosy pet and home products, delivered fast"></video>'+
       '<button type="button" class="ad-video__sound" aria-pressed="false">🔇 Tap for sound</button></div>'+
-      '<div class="ad-video__copy"><h2>Comfort, delivered.</h2><p>Featured finds for your home, car and pets, picked for everyday comfort.</p>'+
+      '<div class="ad-video__copy"><h2>Comfort, delivered.</h2><p>Bestsellers for your home, car and pets, picked for everyday comfort.</p>'+
       '<a class="btn btn-primary btn-xl" href="#bestsellers">Shop now</a></div></div>';
-    if(hero.classList.contains('lw-why')) hero.parentNode.insertBefore(s,hero); else main.insertBefore(s,hero);
+    main.insertBefore(s,hero);
     var v=s.querySelector('video'), b=s.querySelector('.ad-video__sound');
     v.muted=true;
     /* Perf: no MP4 bytes before the page has loaded; phones get the 480px file; reduced motion / Save-Data keep the poster until the user asks. */
@@ -17,9 +17,7 @@
     function start(){ load(); var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
     var auto=!rm&&!sd;
     function later(){ if(auto) (window.requestIdleCallback||setTimeout)(function(){ start(); },{timeout:1500}); }
-    /* QA 15 Nov: fetch the ad only when its section comes near the viewport (was: on page load) */
-    function near(){ if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ if(es.some(function(x){return x.isIntersecting;})){ io.disconnect(); later(); } },{rootMargin:'300px 0px'}); io.observe(s); } else later(); }
-    if(document.readyState==='complete') near(); else window.addEventListener('load',near,{once:true});
+    if(document.readyState==='complete') later(); else window.addEventListener('load',later,{once:true});
     function unmute(){ if(!v.muted||!auto) return; v.muted=false; start(); b.textContent='🔊 Sound on'; b.setAttribute('aria-pressed','true'); off(); }
     function toggle(e){ e.stopPropagation(); v.muted=!v.muted; if(!v.muted)start(); b.textContent=v.muted?'🔇 Tap for sound':'🔊 Sound on'; b.setAttribute('aria-pressed',String(!v.muted)); off(); }
     function off(){ document.removeEventListener('pointerdown',unmute,true); document.removeEventListener('keydown',unmute,true); }

@@ -97,7 +97,7 @@ function art(kind, {bg = true, label, hidden = false} = {}) {
 
 /* Photo with SVG fallback: the SVG sits underneath; if the photo fails it is removed */
 function pic(p, cls = '', eager = false) {
-  const img = p.noimg ? '' : `<img src="assets/img/${esc(p.id)}.webp" srcset="assets/img/sm/${esc(p.id)}.webp 400w, assets/img/${esc(p.id)}.webp 800w" sizes="${eager ? '(max-width:760px) 100vw, 560px' : '(max-width:760px) 48vw, (max-width:1100px) 31vw, 300px'}" alt="${esc(p.name)}" width="800" height="800" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+  const img = p.noimg ? '' : `<img src="assets/img/${esc(p.id)}.webp" alt="${esc(p.name)}" width="800" height="800" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
   return `<div class="pic ${cls}">${art(p.art, {label: p.name, hidden: !p.noimg})}${img}</div>`;
 }
 /* Broken product photos fall back to the drawing without an inline event handler. */
@@ -118,16 +118,16 @@ const PRODUCTS = [
   {id:'trunk-organizer', name:'Trunk Organizer', price:28.99, cat:'Organisation', art:'trunk',
    short:'Foldable, multiple compartments, non-slip. No more chaos in the boot.',
    feat:['Multiple compartments with reinforced dividers','Folds flat when you need the space','Non-slip base / hook-and-loop strips','Tough, wipe-clean fabric']},
-  {id:'dog-car-seat-cover', name:'Dog Car Seat Cover', price:28.99, cat:'Dog', art:'dog', badge:'Staff pick',
+  {id:'dog-car-seat-cover', name:'Dog Car Seat Cover', price:28.99, cat:'Dog', art:'dog', badge:'Dog favourite',
    short:'Protects the back seat from hair, dirt and claws.',
    feat:['Water-repellent surface','Attaches to the headrests','Side flaps keep dirt off the doors','Easy to shake out and wipe clean']},
   {id:'backseat-organizer-tray', name:'Back Seat Organizer with Fold-Down Tray', price:38.99, cat:'Organisation', art:'backseat', badge:'New',
    short:'Fold-down tray, pockets and holders – your back seat becomes base camp.',
    feat:['Fold-down tray for snacks and colouring books','Multiple pockets for bottles and tablets (no electronics)','Attaches to the headrest','Protects the seat back from kick marks']},
-  {id:'umbrella-windshield-sunshade', name:'Umbrella Windshield Sunshade', price:28.99, cat:'Comfort', art:'umbrella', badge:'Summer essential',
+  {id:'umbrella-windshield-sunshade', name:'Umbrella Windshield Sunshade', price:28.99, cat:'Comfort', art:'umbrella', badge:'Summer hit',
    short:'Opens like an umbrella – beat the heat in seconds.',
    feat:['Opens in a few seconds','Reflective outer side','Packs away small with a sleeve','Fits most windshields (check dimensions)']},
-  {id:'magnetic-phone-mount', name:'Magnetic Phone Mount', price:18.99, cat:'Comfort', art:'phone', badge:'Featured',
+  {id:'magnetic-phone-mount', name:'Magnetic Phone Mount', price:18.99, cat:'Comfort', art:'phone', badge:'Bestseller',
    short:'Strong magnet, no cable, no battery. Phone on – done.',
    feat:['Purely magnetic – no power, no cable','Includes adhesive metal plates','Rotates for portrait and landscape','Mounts on dashboard / air vent']},
   {id:'oxford-organizer', name:'Oxford Organizer Bag', price:18.99, cat:'Organisation', art:'oxford',
@@ -149,7 +149,7 @@ const PRODUCTS = [
   {id:'microfiber-towels-10', name:'Microfiber Towels 10-Pack', price:13.99, cat:'Car Care', art:'towels', badge:'Value pack',
    short:'Ten soft all-rounders for body, interior and glass. Wash, reuse, repeat.',
    feat:['10 microfibre cloths in one pack','Listed size approx. 30×30 cm each — GSM is not listed','For body, interior and glass — see the size and use guide','Machine washable, wash separately, no fabric softener']},
-  {id:'drying-towel-1200', name:'XXL Drying Towel 1200 GSM', price:23.99, cat:'Car Care', art:'drytowel', badge:'Staff pick',
+  {id:'drying-towel-1200', name:'XXL Drying Towel 1200 GSM', price:23.99, cat:'Car Care', art:'drytowel', badge:'Detailer pick',
    short:'Twisted-loop monster towel, approx. 60×90 cm – dries a whole car in one go.',
    feat:['Double-sided twisted-loop microfibre','Approx. 60×90 cm, 1200 GSM','Soaks up a huge amount of water','Reduces water spots without chemicals']},
   {id:'wash-mitt-2', name:'Chenille Wash Mitt (2-pack)', price:13.99, cat:'Car Care', art:'mitt',
@@ -168,7 +168,7 @@ const PRODUCTS = [
    short:'Soft foam/microfibre pads with finger pocket – for whatever product you already use.',
    feat:['5 pads in one pack','Finger pocket for control','Washable and reusable','Sold without any chemical product']},
   // --- More car gear ---
-  {id:'windshield-frost-cover', name:'Magnetic Windshield Frost Cover', price:28.99, cat:'Winter', art:'frost', badge:'Winter essential',
+  {id:'windshield-frost-cover', name:'Magnetic Windshield Frost Cover', price:28.99, cat:'Winter', art:'frost', badge:'Winter hit',
    short:'Put it on at night, pull it off in the morning – no scraping.',
    feat:['Covers windshield and wipers','Magnets + door flaps hold it in wind','Water-resistant fabric','Folds into a small bag']},
   {id:'neck-pillow', name:'Memory Foam Neck Pillow', price:18.99, cat:'Comfort', art:'neck',
@@ -632,50 +632,41 @@ function setMeta({title, desc, path, image, noindex}) {
   if (title) { document.title = title; put('meta[property="og:title"]', 'content', title); put('meta[name="twitter:title"]', 'content', title); }
   if (desc) { put('meta[name="description"]', 'content', desc); put('meta[property="og:description"]', 'content', desc); put('meta[name="twitter:description"]', 'content', desc); }
   if (path != null) { const u = SITE + path; put('link[rel="canonical"]', 'href', u); put('meta[property="og:url"]', 'content', u); }
-  if (image) { const u = SITE + image; put('meta[property="og:image"]', 'content', u); put('meta[name="twitter:image"]', 'content', u); put('meta[name="twitter:image:alt"]', 'content', (title || 'FreshDrop') + ' (demo store)'); put('meta[property="og:image:alt"]', 'content', (title || 'FreshDrop') + ' (demo store)'); document.querySelectorAll('meta[property="og:image:width"],meta[property="og:image:height"]').forEach(e => e.remove()); }
+  if (image) { const u = SITE + image; put('meta[property="og:image"]', 'content', u); put('meta[name="twitter:image"]', 'content', u); document.querySelectorAll('meta[property="og:image:width"],meta[property="og:image:height"]').forEach(e => e.remove()); }
   if (noindex) { let m = q('meta[name="robots"]'); if (!m) { m = document.createElement('meta'); m.name = 'robots'; document.head.appendChild(m); } m.content = 'noindex'; }
 }
 
 /* ---------- Layout ---------- */
 function header(active) {
-  const l = (h, t, k) => `<a href="${h}" class="${active === k ? 'active' : ''}"${active === k ? ' aria-current="page"' : ''}>${t}</a>`;
-  const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>';
+  const l = (h, t, k) => `<a href="${h}" class="${active === k ? 'active' : ''}">${t}</a>`;
   return `<a class="skip" href="#main">Skip to main content</a>
-  <header class="site"><div class="demo-bar" role="note">DEMO STORE – no real orders, no payments.<span class="db-x"> All [yellow] fields are placeholders.</span></div><div class="wrap nav">
+  <div class="demo-bar">DEMO STORE – no real orders, no payments. All [yellow] fields are placeholders.</div>
+  <header class="site"><div class="wrap nav">
     <a class="logo" href="index.html">${LOGO}</a>
-    <nav class="nav-links" id="navl" aria-label="Main"><span class="lw-menu-eyebrow" aria-hidden="true">Menu</span>${l('products.html', 'All products', 'shop')}${l('products.html#Bundle', 'Bundles', 'sets')}${l('shipping.html', 'Shipping & Returns', 'shipping').replace('<a ', '<a data-lwx ')}${l('about.html', 'About', 'about').replace('<a ', '<a data-lwx ')}${l('legal-notice.html', 'Contact', 'contact').replace('<a ', '<a data-lwx ')}<span class="auth-slot"><button type="button" class="auth-nav-btn" data-auth="open" aria-haspopup="dialog" aria-controls="auth-overlay">Sign in</button></span></nav>
+    <nav class="nav-links" id="navl" aria-label="Main">${l('products.html', 'All products', 'shop')}${l('products.html#Bundle', 'Bundles', 'sets')}${l('shipping.html', 'Shipping & Returns', 'shipping')}${l('about.html', 'About', 'about')}${l('legal-notice.html', 'Contact', 'contact')}<span class="auth-slot"><button type="button" class="auth-nav-btn" data-auth="open" aria-haspopup="dialog" aria-controls="auth-overlay">Sign in</button></span></nav>
+    <button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="navl" data-act="burger">☰</button>
     <span class="auth-slot auth-slot-bar"><button type="button" class="auth-nav-btn auth-bar-btn" data-auth="open" aria-haspopup="dialog" aria-controls="auth-overlay" aria-label="Sign in"><span class="sr">Sign in</span></button></span>
-    <span class="lw-cta-pair"><a class="cart-btn" href="cart.html"><svg class="cart-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span class="lw-cart-t">Cart</span> <span class="sr">, items:</span> <span class="count">0</span></a><a class="lw-arrow" href="products.html" aria-label="Shop all products">${arrow}</a></span>
-    <button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="navl" data-act="burger"><span class="lw-burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
+    <a class="cart-btn" href="cart.html"><svg class="cart-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span class="sr">Cart, items:</span> <span class="count">0</span></a>
   </div></header>`;
 }
 function footer() {
-  const soon = n => `<span class="lw-soc" aria-label="${n}: no account yet – coming soon"><span aria-hidden="true">${n}</span><small aria-hidden="true">coming soon</small></span>`;
-  return `<footer class="site lw-foot"><div class="lw-foot-scene" aria-hidden="true"><img src="assets/media/field-sm.webp" srcset="assets/media/field-sm.webp 1000w, assets/media/field.webp 2000w" sizes="100vw" alt="" width="2000" height="837" loading="lazy" decoding="async"></div><div class="wrap"><div class="lw-glass">
+  return `<footer class="site"><div class="wrap">
    <div class="foot">
-     <div class="lw-foot-main"><a class="logo" href="index.html">${LOGO}</a>
-       <p class="lw-foot-h" data-split>Fresh finds, fair prices. Let's fill your cart.</p>
-       ${newsletter()}
+     <div><a class="logo" href="index.html" style="font-size:20px">${LOGO}</a>
+       <p>Everyday finds for home, kitchen, pets, office, tools, tech and car. Demo store – no orders are processed yet.</p>
        <div class="pay"><span>${PH('Payment methods')}</span></div></div>
      <div><h2 class="fh">Shop</h2><a href="products.html">All products</a><a href="products.html#Car%20Care">Car Care</a><a href="products.html#Bundle">Bundles</a><a href="cart.html">Cart</a></div>
      <div><h2 class="fh">Help</h2><a href="about.html">About FreshDrop</a><a href="shipping.html">Shipping & Returns</a><a href="withdrawal.html">Right of withdrawal</a><a href="withdrawal.html#withdrawal-function">Withdraw from contract</a><a href="legal-notice.html">Contact</a></div>
      <div><h2 class="fh">Legal</h2><a href="legal-notice.html">Legal Notice</a><a href="terms.html">Terms & Conditions</a><a href="privacy.html">Privacy Policy</a><a href="withdrawal.html">Right of Withdrawal</a><a href="accessibility.html">Accessibility</a></div>
-     <div class="lw-socials"><h2 class="fh">Socials</h2>${soon('Instagram')}${soon('Facebook')}${soon('TikTok')}</div>
    </div>
-   <div class="lw-live-tile" aria-live="off"><span class="lw-live"><i aria-hidden="true"></i>Free shipping from</span><b>€${FREE_SHIP} subtotal</b></div>
-  </div>
-  <div class="copy"><span>© ${new Date().getFullYear()} FreshDrop · ${PH('Company name / owner')}</span><span>All prices incl. VAT, plus shipping (see Shipping).</span><span class="lw-credit">Landscape photos: D-Kuru, Alex.K (Wikimedia Commons, CC BY-SA 4.0)</span></div></div></footer>`;
+   <div class="copy"><span>© ${new Date().getFullYear()} FreshDrop · ${PH('Company name / owner')}</span><span>All prices incl. VAT, plus shipping (see Shipping).</span></div>
+  </div></footer>`;
 }
-/* Decorative distant turbines (Leeward landscape motif) – aria-hidden, CSS-rotated rotors. */
-function lwTurbines(n) {
-  let h = '';
-  for (let i = 0; i < n; i++) h += `<svg class="lw-turbine t${i + 1}" viewBox="0 0 60 120" aria-hidden="true" focusable="false"><path d="M29 40h2l1.2 80h-4.4z" fill="currentColor"/><g class="lw-rotor"><path d="M30 40 L28.6 6 Q30 2 31.4 6Z M30 40 L59 57 Q61 61 56.6 61.4Z M30 40 L4.4 62.6 Q.4 60.6 3.4 57.2Z" fill="currentColor"/><circle cx="30" cy="40" r="2.6" fill="currentColor"/></g></svg>`;
-  return h;
-}
+
 /* ---------- Components ---------- */
 function card(p, h = 'h3') {
   return `<article class="card">
-    <div class="thumb-wrap"><a class="thumb" href="product.html?id=${esc(p.id)}" data-cursor="View">${pic(p)}${p.badge ? `<span class="badge ${isB(p) ? 'alt' : ''}">${esc(p.badge)}</span>` : ''}${bSave(p) ? `<span class="save-pill on-card">${saveTxt(bSave(p))}</span>` : ''}</a>${p.variants ? `<a class="quick" href="product.html?id=${esc(p.id)}" tabindex="-1" aria-hidden="true">Choose options →</a>` : `<button type="button" class="quick" data-act="add" data-id="${esc(p.id)}" tabindex="-1" aria-hidden="true">+ Quick add · ${eur(p.price)}</button>`}</div>
+    <div class="thumb-wrap"><a class="thumb" href="product.html?id=${esc(p.id)}">${pic(p)}${p.badge ? `<span class="badge ${isB(p) ? 'alt' : ''}">${esc(p.badge)}</span>` : ''}${bSave(p) ? `<span class="save-pill on-card">${saveTxt(bSave(p))}</span>` : ''}</a>${p.variants ? `<a class="quick" href="product.html?id=${esc(p.id)}" tabindex="-1" aria-hidden="true">Choose options →</a>` : `<button type="button" class="quick" data-act="add" data-id="${esc(p.id)}" tabindex="-1" aria-hidden="true">+ Quick add · ${eur(p.price)}</button>`}</div>
     <div class="body"><${h} class="ct"><a href="product.html?id=${esc(p.id)}">${isB(p) ? 'Bundle: ' : ''}${esc(p.name)}</a></${h}>
       <p class="desc">${esc(p.short)}</p>${p.dims ? `<p class="dimline" title="${esc(p.dims)}">📏 ${esc(p.dims)}</p>` : ''}${p.variants ? `<p class="vhint">${vHint(p)} available</p>` : ''}
       <div class="price-row"><div class="price">${p.variants && p.variants.opts.some(o => o.add > 0) ? '<small style="display:inline;margin-right:4px">from</small>' : ''}${eur(p.price)}${isB(p) && p.extra.length === 0 ? `<span class="old">separately ${eur(p.single)}</span>` : ''}<small>incl. VAT, plus shipping</small></div>
@@ -702,7 +693,7 @@ const GROUPS = [
   {k:'Bathroom', en:'Bathroom', cats:['Bathroom']},
   {k:'Tools', en:'Tools', cats:['Tools']},
   {k:'Travel', en:'Travel', cats:['Travel']},
-  {k:'SG', en:'Gym', cats:['SG']},
+  {k:'SG', en:'GYM', cats:['SG']},
   {k:'Car', en:'Car', cats:['Organisation','Comfort','Car Care','Winter','Bundle']},
 ];
 const CAR_SUBS = ['Organisation','Comfort','Car Care','Winter','Bundle'];
@@ -725,100 +716,54 @@ function catTiles() {
   return `<div class="cat-tiles">${GROUPS.map(g => { const items = ALL.filter(p => matches(p, g.k)); const p = items.find(x => !x.noimg) || items[0]; return p ? `<a class="cat-tile" href="products.html#${encodeURIComponent(g.k)}">${pic(p)}<span class="cn">${g.en}</span><span class="cc">${items.length} items</span></a>` : ''; }).join('')}</div>`;
 }
 /* ---------- Pages ---------- */
-/* Leeward scenes: transparent cut-outs of the same product photos (white studio background removed) */
-const cutPic = (p, cls = '', eager = false) => `<div class="pic lw-cut ${cls}"><img src="assets/img/cut/${esc(p.id)}.webp" alt="${esc(p.name)}" width="480" height="480" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>`;
 function pageHome() {
   const best = ['magnetic-phone-mount', 'dog-car-seat-cover', 'backseat-organizer-tray', 'umbrella-windshield-sunshade'].map(byId);
-  const cheapest = Math.min(...ALL.map(p => p.price));
-  const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>';
-  const pill = (id, shape, word) => { const x = byId(id); return `<span class="lw-word">${word}</span> <span class="lw-pill ${shape}" data-px aria-hidden="true"><img src="assets/img/sm/${esc(x.id)}.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span>`; };
-  const STAGES = [
-    {k: 'Choose', img: 'microfiber-towels-10', t: `${ALL.length} everyday products in ${GROUPS.length} categories. Every price includes VAT.`},
-    {k: 'Bundle', img: 'bundle-tidy-car', t: 'Put pieces together and pay less than buying them separately.'},
-    {k: 'Ship', img: 'foldable-storage-boxes-3', t: 'Planned for the live shop: partner warehouse, about 7–15 business days in the EU. This demo does not ship.'},
-    {k: 'Return', img: 'washable-pet-bed', t: 'Planned for the live shop: a statutory 14-day right of withdrawal for EU consumers.'},
-  ];
-  /* LEEWARD hero band: 12 × 2 square cells (desktop), 4 × 3 (mobile); c = cream cut-out, g = frosted glass, t = data tile */
-  const tile = (cls, label, val, extra = '') => `<div class="lw-tile ${cls}" role="listitem"${extra}><small>${label}</small><b>${val}</b></div>`;
   return `
-  <section class="hero lw-hero" aria-labelledby="lw-hero-h">
-    <div class="lw-media" aria-hidden="true"><video class="lw-video" muted playsinline loop preload="none" poster="assets/media/${matchMedia('(max-width:760px)').matches ? 'hero-poster-sm.webp' : 'hero-poster.webp'}" data-src="assets/media/hero-loop.mp4" data-src-sm="assets/media/hero-loop-sm.mp4" width="1280" height="648"></video></div>
-    <div class="wrap lw-hero-top">
-      <div class="lw-hero-copy"><h1 id="lw-hero-h" data-split>Fresh finds for every day. <em>Welcome to FreshDrop.</em></h1></div>
-      <div class="lw-hero-side"><p class="lead">Home, kitchen, pet, office, tech and car accessories that simply work – practical everyday finds at fair prices.</p>
-        <a class="lw-link" href="products.html">Shop all products ${arrow}</a></div>
+  <section class="hero"><div class="wrap hero-grid">
+    <div><span class="eyebrow">Home · Kitchen · Pets · Car &amp; more</span>
+      <h1>Fresh finds for every day. <em>Welcome to FreshDrop.</em></h1>
+      <p class="lead">Home, kitchen, pet, office, tech and car accessories that simply work – practical everyday finds at fair prices.</p>
+      <div class="hero-ctas"><a class="btn btn-primary btn-xl" href="products.html">Gear up now →</a><a class="btn btn-ghost" href="#bundles">See bundles</a></div>
+      <div class="hero-facts"><span>14-day right of withdrawal</span><span>Shipping across the EU</span><span>Demo store – no real orders yet</span></div>
     </div>
-    <div class="lw-tiles" role="list" aria-label="FreshDrop in numbers">
-      <span class="lw-cc c1" aria-hidden="true"></span><span class="lw-cc c2" aria-hidden="true"></span><span class="lw-cc c3" aria-hidden="true"></span><span class="lw-cc c4" aria-hidden="true"></span>
-      <span class="lw-g g1" aria-hidden="true"></span><span class="lw-g g2" aria-hidden="true"></span><span class="lw-g g3" aria-hidden="true"></span><span class="lw-g g4" aria-hidden="true"></span><span class="lw-g g5" aria-hidden="true"></span><span class="lw-g g6" aria-hidden="true"></span>
-      ${tile('t1', 'Products', `<span data-roll="${ALL.length}">${ALL.length}</span>`)}
-      ${tile('t2', 'Categories', `<span data-roll="${GROUPS.length}">${GROUPS.length}</span>`)}
-      <div class="lw-tile t3 lw-dark" role="listitem"><small class="lw-live"><i aria-hidden="true"></i>In your cart right now</small><b><span class="count lw-roll-live">0</span> <span class="lw-unit">items</span></b></div>
-      ${tile('t4', 'Prices from', eur(cheapest))}
+    <div class="hero-art">
+      <div class="hero-main">${pic(byId('magnetic-phone-mount'), 'hero', true)}<span class="hero-tag"><small>Bestseller</small><b>${esc(byId('magnetic-phone-mount').name)}</b><span>${eur(byId('magnetic-phone-mount').price)}</span></span></div>
+      ${['dog-car-seat-cover','backseat-organizer-tray','umbrella-windshield-sunshade'].map((id, i) => { const x = byId(id); return `<a class="hero-float f${i + 1}" href="product.html?id=${esc(x.id)}" aria-label="${esc(x.name)} – ${eur(x.price)}">${pic(x)}<span>${eur(x.price)}</span></a>`; }).join('')}
+      <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span>
     </div>
-    <div class="wrap"><div class="hero-facts"><span>14-day right of withdrawal</span><span>Free shipping over €${FREE_SHIP}</span><span>Demo store – no real orders yet</span></div></div>
-  </section>
-  <div class="usp-bar"><div class="wrap"><span>↩️ 14-day right of withdrawal</span><span>📦 Planned: shipping across the EU · approx. 7–15 business days</span><span>🚚 Free shipping over €39</span><span>💶 Prices incl. VAT</span><span>🎁 Bundles: cheaper together</span></div></div>
-  <section class="lw-what" aria-labelledby="lw-what-h"><div class="wrap">
-    <span class="lw-eyebrow">What we do</span>
-    <h2 id="lw-what-h" class="lw-statement" data-split data-fill aria-label="We pick everyday finds for your home, your car and your pets – and, once the shop is live, we'll ship them across the EU.">${pill('foldable-storage-boxes-3', 'pill', 'We pick everyday finds for your home,')} ${pill('backseat-organizer-tray', 'rect', 'your car')} <span class="lw-word">and your</span> ${pill('washable-pet-bed', 'circle', 'pets –')} <span class="lw-word">and, once the shop is live, we'll ship them across the EU.</span></h2>
   </div></section>
-  <section class="lw-stages" aria-labelledby="lw-st-h"><div class="lw-stages-pin"><div class="wrap">
-    <div class="lw-sec-head"><span class="lw-eyebrow">How an order would work</span><h2 id="lw-st-h" data-split>From first click to delivery.</h2></div>
-    <div class="lw-stage-frame" data-cursor="View">
-      ${STAGES.map((st, i) => `<div class="lw-stage-img${i === 0 ? ' on' : ''}" data-i="${i}"><span class="lw-stage-bg"><img src="assets/media/field-sm.webp" srcset="assets/media/field-sm.webp 1000w, assets/media/field.webp 2000w" sizes="100vw" alt="" width="2000" height="837" loading="lazy" decoding="async"></span>${cutPic(byId(st.img), 'lw-stage-pic')}</div>`).join('')}
-      <div class="lw-stage-word" aria-hidden="true"><div class="lw-stage-roll">${STAGES.map(st => `<span>${st.k}</span>`).join('')}</div></div>
-      <div class="lw-stage-copy" aria-live="polite">${STAGES.map((st, i) => `<p class="lw-stage-t${i === 0 ? ' on' : ''}" data-i="${i}"><b class="sr">${st.k}: </b>${esc(st.t)}</p>`).join('')}</div>
-      <a class="lw-stage-link" href="products.html">Shop all products</a>
-    </div>
-    <div class="lw-stage-bar" role="tablist" aria-label="Order stages"><span class="lw-stage-track"><span class="lw-stage-fill"></span><span class="lw-stage-knob"></span></span>
-      ${STAGES.map((st, i) => `<button type="button" role="tab" class="lw-stage-btn${i === 0 ? ' on' : ''}" data-i="${i}" aria-selected="${i === 0}">${st.k}</button>`).join('')}</div>
-  </div></div></section>
-  <section class="lw-planner" aria-labelledby="lw-pl-h"><div class="wrap lw-planner-grid">
-    <div class="lw-planner-copy"><span class="lw-eyebrow">For your basket</span><h2 id="lw-pl-h" data-split>Your basket keeps saving.</h2>
-      <p>Slide to a basket value and see where free shipping and the newsletter code kick in. The picked items are real FreshDrop products at their listed prices.</p>
-      <label class="lw-range"><span class="lw-range-top"><span>Basket value</span><output id="lw-pl-out">€25</output></span><input id="lw-pl" type="range" min="0" max="100" step="1" value="25" aria-describedby="lw-pl-note"></label>
-      <dl class="lw-pl-rows"><div><dt>Left to free shipping</dt><dd id="lw-pl-left">€14.00</dd></div><div><dt>WELCOME10 saves you</dt><dd id="lw-pl-save">€2.50</dd></div><div><dt>Example total after code</dt><dd id="lw-pl-tot">€22.50</dd></div></dl>
-      <span class="lw-cta-pair"><a class="btn btn-primary" href="products.html">Start your basket</a><a class="lw-arrow" href="products.html" aria-label="Start your basket – all products">${arrow}</a></span>
-      <p class="lw-pl-note" id="lw-pl-note">Example only. Free shipping applies when the order subtotal is over €${FREE_SHIP}; below that a shipping price is not set in this demo. The 10% code comes from the newsletter.</p></div>
-    <div class="lw-map" aria-hidden="true"><div class="lw-map-grid">${PRODUCTS.filter(p => !p.noimg).slice(0, 24).map(p => `<span class="lw-map-cell" data-id="${esc(p.id)}" data-price="${p.price}"><img src="assets/img/sm/${esc(p.id)}.webp" alt="" width="200" height="200" loading="lazy" decoding="async"><i class="lw-dot"></i></span>`).join('')}</div><span class="lw-sel"><span class="lw-sel-l"></span><i class="lw-sel-h"></i></span></div>
-  </div></section>
+  <div class="usp-bar"><div class="wrap"><span>↩️ 14-day right of withdrawal</span><span>📦 Shipping across the EU · approx. 7–15 business days</span><span>🚚 Free shipping over €39</span><span>💶 Prices incl. VAT</span><span>🎁 Bundles: cheaper together</span></div></div>
+  ${dealStrip()}
+  <div class="marquee" aria-hidden="true"><div>${Array(2).fill('<span>Home</span>★<span>Kitchen</span>★<span>Pets</span>★<span>Office</span>★<span>Tools</span>★<span>Car</span>★<span>FreshDrop</span>★').join('')}</div></div>
   <section class="block" style="padding-bottom:0"><div class="wrap">
-    <div class="sec-head"><div><span class="lw-eyebrow">Categories</span><h2 data-split>Shop by <b>category</b></h2></div><a class="btn btn-ghost btn-sm" href="products.html">All products →</a></div>
+    <div class="sec-head"><div><h2>Shop by <b>category</b></h2></div><a class="btn btn-ghost btn-sm" href="products.html">All products →</a></div>
     ${catTiles()}
   </div></section>
   <section class="block" id="bestsellers"><div class="wrap">
-    <div class="sec-head"><div><span class="lw-eyebrow">Featured</span><h2 data-split>Featured <b>for the car</b></h2><p>Picked for the car – practical pieces for every drive.</p></div><a class="btn btn-ghost btn-sm" href="products.html">All products →</a></div>
+    <div class="sec-head"><div><h2>The <b>bestsellers</b></h2><p>What belongs in almost every car.</p></div><a class="btn btn-ghost btn-sm" href="products.html">All products →</a></div>
     <div class="grid">${best.map(p => card(p)).join('')}</div>
   </div></section>
  <section class="block" style="padding-top:0"><div class="wrap">
-    <div class="sec-head"><div><span class="lw-eyebrow">Car care</span><h2 data-split>Car <b>care</b></h2><p>Microfibre, mitts and brushes – zero chemicals, all reusable.</p></div><a class="btn btn-ghost btn-sm" href="products.html#Car%20Care">All car care →</a></div>
+    <div class="sec-head"><div><h2>Car <b>care</b></h2><p>Microfibre, mitts and brushes – zero chemicals, all reusable.</p></div><a class="btn btn-ghost btn-sm" href="products.html#Car%20Care">All car care →</a></div>
     <div class="grid">${['microfiber-towels-10','drying-towel-1200','wash-mitt-2','detailing-brush-set-5'].map(byId).map(p => card(p)).join('')}</div>
   </div></section>
-  ${dealStrip()}
-  <section class="block" id="bundles"><div class="wrap">
-    <div class="sec-head"><div><span class="lw-eyebrow">Bundles</span><h2 data-split>Bundles & <b>savings</b></h2><p>Cheaper together than separately.</p></div></div>
+  <section class="block" id="bundles" style="background:var(--bg2)"><div class="wrap">
+    <div class="sec-head"><div><h2>Bundles & <b>savings</b></h2><p>Cheaper together than separately.</p></div></div>
     <div class="bundles">${BUNDLES.map(bundleCard).join('')}</div>
   </div></section>
-  <section class="block lw-why"><div class="wrap">
-    <div class="lw-sec-head"><span class="lw-eyebrow">Why FreshDrop</span><h2 data-split>Shopping with FreshDrop.</h2></div>
-    <div class="trust lw-cards" tabindex="0" role="region" aria-label="Why FreshDrop">
-      <div class="lw-card sky"><h3>14 days to change your mind.</h3><p>Statutory right of withdrawal for all consumers in the EU.</p><span class="lw-flock" aria-hidden="true">${Array.from({length: 26}, (_, i) => `<i style="--i:${i};top:${(40 + Math.sin(i * 1.3) * 28 + (i % 3) * 6).toFixed(1)}%"></i>`).join('')}</span><span class="lw-card-hills" aria-hidden="true"></span><span class="lw-card-ic" aria-hidden="true">${arrow}</span></div>
-      <div class="lw-card photo"><div class="lw-card-photo" data-px><span class="lw-card-mosaic" aria-hidden="true">${['adjustable-wrench','silicone-utensil-set','dog-grooming-brush','desk-organizer'].map(id => `<img src="assets/img/sm/${id}.webp" alt="" width="120" height="120" loading="lazy" decoding="async">`).join('')}</span><span class="lw-card-ic dark" aria-hidden="true">${arrow}</span></div><div class="lw-card-txt"><h3>Everyday essentials.</h3><p>Practical products for home, kitchen, pets, office, tools and car. Demo store – no real orders or payments yet.</p></div></div>
-      <div class="lw-card green"><span class="lw-card-ic light" aria-hidden="true">${arrow}</span><h3>You'll know the delivery time first.</h3><p>Planned for the live shop: approx. 7–15 business days. We tell you up front how long it takes.</p>
-        <span class="lw-card-turb" aria-hidden="true">${lwTurbines(3)}</span>
-        <svg class="lw-ill" viewBox="0 0 300 150" aria-hidden="true" focusable="false"><path d="M0 92 Q80 70 150 86 T300 80 V150 H0Z" fill="rgba(255,255,255,.14)"/><path d="M0 112 Q90 96 170 110 T300 104 V150 H0Z" fill="rgba(0,0,0,.18)"/><g fill="#16231A"><path d="M26 98l18-14 18 14v22H26z"/></g><rect x="38" y="106" width="5" height="6" fill="#F1F4EB"/><rect x="47" y="106" width="5" height="6" fill="#F1F4EB"/><path class="lw-dash" d="M72 112H236" stroke="#F1F4EB" stroke-width="1.5" stroke-dasharray="4 4"/><g class="lw-van" fill="#F1F4EB"><rect x="236" y="96" width="34" height="16" rx="2"/><rect x="262" y="100" width="14" height="12" rx="2"/><circle cx="246" cy="114" r="4" fill="#16231A"/><circle cx="266" cy="114" r="4" fill="#16231A"/></g></svg>
-        <span class="lw-dist">7–15 days</span></div>
+  <section class="block"><div class="wrap">
+    <div class="sec-head"><div><h2>Why <b>FreshDrop</b></h2></div></div>
+    <div class="trust">
+      <div><div class="ic">↩️</div><h3>14-day withdrawal</h3><p>Statutory right of withdrawal for all consumers in the EU.</p></div>
+      <div><div class="ic">📦</div><h3>Honest delivery times</h3><p>Approx. 7–15 business days. We tell you up front how long it takes.</p></div>
+      <div><div class="ic">ℹ️</div><h3>Demo store</h3><p>No real orders or payments are processed yet. Checkout will be added before launch.</p></div>
+      <div><div class="ic">🧰</div><h3>Everyday essentials</h3><p>Practical products for home, kitchen, pets, office, tools and car.</p></div>
     </div>
-    <div class="lw-progress" aria-hidden="true"><span></span></div>
   </div></section>
   <section class="block" style="padding-top:0"><div class="wrap">
-    <div class="sec-head"><div><span class="lw-eyebrow">Reviews</span><h2 data-split>Reviews</h2></div></div>
-    <div class="reviews-empty"><h3>No reviews yet</h3><p>This is a demo store, so there are no customer reviews yet. Only real, verified reviews will appear after launch.<br>${PH('Add review widget after launch – no fake reviews')}</p></div>
-  </div></section>
-  <section class="lw-range-sec" aria-labelledby="lw-mq-h"><div class="wrap lw-sec-head"><span class="lw-eyebrow">Our range</span><h2 id="lw-mq-h" data-split>What we stock.</h2></div>
-  <div class="lw-marquee marquee" aria-hidden="true"><div>${Array(2).fill(GROUPS.map((g, i) => `<span class="lw-mk k${i % 5}">${esc(g.en)}</span><svg class="lw-mk-ic" viewBox="0 0 24 30"><path d="M12 1C12 1 1.5 11.6 1.5 18.2a10.5 10.5 0 0 0 21 0C22.5 11.6 12 1 12 1Z" fill="currentColor"/></svg>`).join('')).join('')}</div></div>
-  <p class="sr">Categories: ${GROUPS.map(g => esc(g.en)).join(', ')}.</p></section>`;
+    <div class="sec-head"><div><h2>Reviews</h2></div></div>
+    <div class="reviews-empty"><h3>No reviews yet</h3><p>We've just launched. Only real, verified reviews from customers will appear here.<br>${PH('Add review widget after launch – no fake reviews')}</p></div>
+  </div></section>`;
 }
 function pageShop() {
   const valid = c => c === 'All' || GROUPS.some(g => g.k === c) || ALL.some(p => p.cat === c);
@@ -834,7 +779,7 @@ function pageShop() {
       const ttl = document.getElementById('ptitle'); const nm = c === 'All' ? '' : (c === 'Car' ? 'Car' : (c === 'Bundle' ? 'Bundles' : (g && g.k !== 'Car' ? (g.en || g.k) : c)));
       const ct = window.fdCatTitle ? window.fdCatTitle(c, c === 'SG' ? 'GYM' : nm) : null;
       ttl.classList.toggle('is-sg', c === 'SG' && !ct); ttl.classList.toggle('is-ct', !!ct);
-      ttl.innerHTML = ct || (c === 'SG' ? '<img class="gym-logo" src="assets/gym-logo.webp" alt="Gym" width="600" height="190">' : (nm ? '<b>' + esc(nm) + '</b>' : 'All <b>products</b>'));
+      ttl.innerHTML = ct || (c === 'SG' ? '<img class="gym-logo" src="assets/gym-logo.png" alt="GYM" width="900" height="320">' : (nm ? '<b>' + esc(nm) + '</b>' : 'All <b>products</b>'));
       if (c === 'SG' && !ct) ttl.setAttribute('aria-label', 'GYM'); else ttl.removeAttribute('aria-label');
       if (ct && window.fdCatTitleFit) window.fdCatTitleFit(ttl);
       const n = ALL.filter(p => matches(p, c)).length, label = c === 'All' ? 'All products' : (c === 'SG' ? 'GYM' : nm || c);
@@ -1024,10 +969,10 @@ function pageProduct() {
   const sunWarn = p.id === 'umbrella-windshield-sunshade' ? '<li>Use only when the vehicle is parked. Remove completely before driving.</li>' : '';
   return `<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="products.html">Products</a> / <span aria-current="page">${esc(p.name)}</span></nav>
   <div class="pd">
-    <div><div class="gallery" data-px data-cursor="View">${pic(p, '', true)}</div><p class="photo-note">Illustrative AI-generated image – final product photos to follow.</p></div>
+    <div><div class="gallery">${pic(p, '', true)}</div><p class="photo-note">Illustrative AI-generated image – final product photos to follow.</p></div>
     <div>
       ${p.badge ? `<span class="eyebrow">${esc(p.badge)}</span>` : ''}
-      <h1 data-split>${isB(p) ? 'Bundle: ' : ''}${esc(p.name)}</h1>
+      <h1>${isB(p) ? 'Bundle: ' : ''}${esc(p.name)}</h1>
       <p style="color:var(--muted);font-size:17px;margin:0 0 16px">${esc(p.short)}</p>
       ${bSave(p) ? `<span class="save-pill big pd-save">${saveTxt(bSave(p))} vs. buying the items separately</span>` : ''}
       <div class="price" id="pprice">${eur(p.price)}${isB(p) ? ` <span class="old" style="text-decoration:none">items bought separately ${eur(p.single)}${p.extra.length ? ' + bundle extra' : ''}</span>` : ''}</div>
@@ -1048,7 +993,7 @@ function pageProduct() {
       <details class="acc"><summary>Shipping & returns</summary><div class="in">${SHIP_TXT} Returns possible within 14 days of receipt – see <a href="shipping.html">Shipping & Returns</a>.</div></details>
     </div>
   </div>
-  <section class="block" style="padding-top:20px"><div class="sec-head"><h2 data-split>Goes <b>well with</b></h2></div><div class="grid">${related.map(x => card(x)).join('')}</div></section></div>`;
+  <section class="block" style="padding-top:20px"><div class="sec-head"><h2>Goes <b>well with</b></h2></div><div class="grid">${related.map(x => card(x)).join('')}</div></section></div>`;
 }
 function selectVariant(vid) {
   const p = window.curP, v = p && vOf(p, vid);
@@ -1058,35 +1003,6 @@ function selectVariant(vid) {
   document.getElementById('vname').textContent = v.n;
   const dt = document.getElementById('dimtxt'); if (dt) dt.textContent = dimsOf(p, vid);
   document.getElementById('pprice').textContent = eur(unitPrice(p, v));
-  tintGallery(p, v);
-}
-/* Colour chips: there is one photo per product, so the chosen colour is previewed with a CSS filter
-   (approximate, labelled as such). Packs, mixed colours, wood, transparent and light-to-dark swaps keep the photo. */
-const HUES = {yellow: 52, orange: 26, blue: 212, navy: 222, pink: 330, red: 0, green: 120, beige: 38};
-function colourWord(v) { const m = String(v.id).match(/(space-grey|black|silver|grey|white|blue|navy|pink|red|green|orange|yellow|beige)$/); return m ? m[1].replace('space-grey', 'grey') : ''; }
-function tintFilter(from, to) {
-  if (!from || !to || from === to) return '';
-  const dark = c => c === 'black' || c === 'navy', light = c => c === 'white' || c === 'silver' || c === 'grey' || c === 'beige';
-  if (from === 'black') {
-    if (to === 'silver') return 'grayscale(1) brightness(2.3) contrast(.72)';
-    if (to === 'grey') return 'grayscale(1) brightness(1.8) contrast(.8)';
-    if (to === 'white') return 'grayscale(1) brightness(3.2) contrast(.55)';
-    if (HUES[to] != null) return `grayscale(1) brightness(2.4) sepia(1) saturate(5) hue-rotate(${HUES[to] - 38}deg)`;
-    return '';
-  }
-  if (dark(to) && !dark(from)) return '';
-  if (to === 'grey' || to === 'silver' || to === 'white') return 'grayscale(1)' + (to === 'white' ? ' brightness(1.35)' : '');
-  if (HUES[to] != null && HUES[from] != null) return `hue-rotate(${HUES[to] - HUES[from]}deg)`;
-  if (HUES[to] != null && light(from)) return `sepia(1) saturate(4) hue-rotate(${HUES[to] - 38}deg)`;
-  return '';
-}
-function tintGallery(p, v) {
-  const g = document.querySelector('.gallery'); if (!g || !p.variants) return;
-  const img = g.querySelector('img'), base = p.variants.opts[0], f = tintFilter(colourWord(base), colourWord(v));
-  if (img) { img.style.filter = f; img.style.transition = 'filter .45s cubic-bezier(.22,1,.36,1)'; img.alt = p.name + (f ? ' – colour preview: ' + v.n : ''); }
-  let n = g.parentNode.querySelector('.tint-note');
-  if (f) { if (!n) { n = document.createElement('p'); n.className = 'photo-note tint-note'; g.insertAdjacentElement('afterend', n); } n.textContent = 'Colour preview (approximate) – the photo shows ' + base.n + '.'; }
-  else if (n) n.remove();
 }
 /* ---------- Free shipping, promo code, newsletter (demo – no backend) ---------- */
 const FREE_SHIP = 39, PROMO_KEY = 'fd_promo_v1', NEWS_KEY = 'fd_newsletter_v1', PROMO_CODE = 'WELCOME10';
@@ -1110,18 +1026,17 @@ function newsEmailOk(em) {
 }
 function newsletter() {
   let saved = null; try { saved = JSON.parse(localStorage.getItem(NEWS_KEY)); } catch (e) {}
-  const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>';
-  return `<div class="news-card lw-news">${saved && newsEmailOk(saved.email) ? newsDone() : `
-    <h2 id="news-h" class="sr">Newsletter</h2>
-    <p class="news-lead">New finds and bundle deals by email – and a preview of the 10% demo code.</p>
-    <form class="news-form" data-news novalidate><label class="sr" for="news-email">Email address</label><input id="news-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="Your email" required><button type="submit" class="btn btn-primary lw-arrow" aria-label="See a sample 10% code">${arrow}</button></form>
+  return `<section class="news" aria-labelledby="news-h"><div class="wrap"><div class="news-card">${saved && newsEmailOk(saved.email) ? newsDone() : `
+    <span class="eyebrow">Newsletter</span><h2 id="news-h">Get <b>10% off</b> your first order.</h2>
+    <p class="news-lead">Sign up for new finds and bundle deals from FreshDrop.</p>
+    <form class="news-form" data-news novalidate><label class="sr" for="news-email">Email address</label><input id="news-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required><button type="submit" class="btn btn-primary">Get my 10%</button></form>
     <p class="news-msg" aria-live="polite"></p>
-    <p class="news-note">Demo store: no emails are sent. Your address is only saved in this browser (localStorage) and never leaves your device.</p>`}</div>`;
+    <p class="news-note">Demo store: no emails are sent. Your address is only saved in this browser (localStorage) and never leaves your device.</p>`}</div></div></section>`;
 }
 function newsDone() {
-  return `<h2 id="news-h" class="lw-news-h">Here's your sample 10% code.</h2>
-    <p class="news-lead">Demo only – use it in the cart to preview 10% off your subtotal:</p>
-    <div class="news-code"><b>${PROMO_CODE}</b><a class="btn btn-primary btn-sm" href="cart.html">Try it in the cart →</a></div>
+  return `<span class="eyebrow">Newsletter</span><h2 id="news-h">You're in! <b>Here's your 10%.</b></h2>
+    <p class="news-lead">Use this code in your cart for 10% off your subtotal:</p>
+    <div class="news-code"><b>${PROMO_CODE}</b><a class="btn btn-primary btn-sm" href="cart.html">Use it in the cart →</a></div>
     <p class="news-note">Demo store: no email was sent and nothing was stored on a server – your address stays in this browser only.</p>`;
 }
 function updateMiniShip() {
@@ -1131,7 +1046,7 @@ function updateMiniShip() {
 function pageCart() {
   setMeta({title: 'Cart – FreshDrop', path: 'cart.html'});
   setTimeout(renderCart);
-  return `<div class="wrap"><section style="padding-top:40px"><div class="sec-head"><h1 data-split>Your <b>cart</b></h1></div></section><div id="cartbox"></div></div>`;
+  return `<div class="wrap"><section style="padding-top:40px"><div class="sec-head"><h1>Your <b>cart</b></h1></div></section><div id="cartbox"></div></div>`;
 }
 function renderCart() {
   const c = Cart.get(), ids = Object.keys(c), box = document.getElementById('cartbox');
@@ -1150,7 +1065,7 @@ function renderCart() {
       <div class="r total"><span>Total</span><span>${eur(sub - disc)}</span></div>
       ${promoBox(code)}
       <div style="color:var(--muted);font-size:12px;margin-bottom:16px">incl. VAT (rate of the destination country) · delivery approx. 7–15 business days</div>
-      <button type="button" class="btn btn-primary" style="width:100%" data-act="checkout">Try checkout (demo – no payment)</button>
+      <button type="button" class="btn btn-primary" style="width:100%" data-act="checkout">Order with obligation to pay</button>
       <p style="color:var(--muted);font-size:12px">By placing your order you accept our <a href="terms.html">Terms & Conditions</a> and acknowledge the <a href="withdrawal.html">withdrawal information</a> and <a href="privacy.html">Privacy Policy</a>.<br><b>Demo:</b> no order or payment takes place.</p>
       <ul class="sum-trust"><li>↩️ 14-day right of withdrawal</li><li>📦 Delivery approx. 7–15 business days</li><li>🚚 Free shipping over €39</li></ul>
     </aside></div>${cartXsell(ids)}`;
@@ -1220,7 +1135,7 @@ document.addEventListener('submit', e => {
 
 /* ---------- Scroll reveal (visual only) ---------- */
 function initReveal() {
-  if (document.documentElement.classList.contains('lw') || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {rootMargin: '0px 0px -8% 0px'});
   const scan = () => document.querySelectorAll('.sec-head, .card, .cat-tile, .bundle, .trust > div, .reviews-empty, .deal-strip').forEach((el, i) => { if (el.dataset.rv) return; el.dataset.rv = 1; const r = el.getBoundingClientRect(); if (r.top < innerHeight) return; el.classList.add('reveal'); el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
   scan(); new MutationObserver(scan).observe(document.getElementById('main'), {childList: true, subtree: true});
@@ -1234,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   main.setAttribute('tabindex', '-1');
   if (r) main.innerHTML = r();
   else main.innerHTML = main.innerHTML.replace(/\{\{(.+?)\}\}/g, (_, t) => PH(t));
-  document.body.insertAdjacentHTML('beforeend', footer());
+  document.body.insertAdjacentHTML('beforeend', newsletter() + footer());
   if (pg !== 'cart') document.body.insertAdjacentHTML('beforeend', `<a class="m-cart" href="cart.html"><span class="mc-t"><span>🛒 View cart</span><small class="mc-ship"></small></span><b aria-label="items in cart"><span class="count">0</span></b></a>`);
   updateCount();
   initReveal();
