@@ -286,3 +286,6 @@ main:focus{outline:none}
 .legal .updated{color:var(--muted);font-size:14px}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 .chip{min-width:44px}
+/* QA 2026-11-18: the shop header is injected by app.js; keep <main> invisible (not removed) until it exists so the page does not jump down (CLS). Falls back to visible after 1.5s if JS fails. */
+@keyframes qa-show-main{to{visibility:visible}}
+body[data-page]:not(:has(> header.site)) > main{visibility:hidden;animation:qa-show-main 0s 1.5s forwards}
